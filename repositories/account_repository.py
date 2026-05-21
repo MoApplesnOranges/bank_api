@@ -8,7 +8,7 @@ class AccountRepository:
     async def get_all_accounts():
         accounts = []
         async for account in account_collection.find():
-            account["id"] = str(account["_id"])
+            account["account_id"] = str(account["_id"])
             del account["_id"]
             accounts.append(account)
         return accounts
@@ -21,7 +21,7 @@ class AccountRepository:
             account["id"] = str(account["_id"])
             del account["_id"]
             accounts.append(account)
-        return await accounts
+        return accounts
 
     async def get_premium_accounts():
         accounts = []
@@ -54,4 +54,4 @@ class AccountRepository:
         await account_collection.delete_one({"_id": ObjectId(account_id)})
         account["id"] = str(account["_id"])
         del account["_id"]
-        return account
+        return "Account deleted"

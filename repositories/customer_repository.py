@@ -11,12 +11,15 @@ class CustomerRepository:
         customers = []
 
         async for customer in customer_collection.find():
-            for account in account_collection:
+            async for account in account_collection.find():
                 if account["customer_id"] == str(customer["_id"]):
+                    account["_id"] = str(account["_id"])
                     del account["customer_id"]
+                    account["account_id"] = account["_id"]
+                    del account["_id"]
                     customer["accounts"].append(account)
-
-            customer["customer_id"] = str(customer["_id"])
+            customer["_id"] = str(customer["_id"])
+            customer["customer_id"] = customer["_id"]
             del customer["_id"]
             customers.append(customer)
 
@@ -24,10 +27,20 @@ class CustomerRepository:
 
     @staticmethod
     async def get_customer_by_id(customer_id: str | int):
+
         customer = await customer_collection.find_one({"_id": ObjectId(customer_id)})
         customer["_id"] = str(customer["_id"])
         customer["customer_id"] = customer["_id"]
         del customer["_id"]
+
+        async for account in account_collection.find():
+            if account["customer_id"] == customer_id:
+                account["_id"] = str(account["_id"])
+                del account["customer_id"]
+                account["account_id"] = account["_id"]
+                del account["_id"]
+                customer["accounts"].append(account)
+
         return customer
 
     @staticmethod
@@ -62,3 +75,4 @@ class CustomerRepository:
 
         customer["id"] = str(customer["_id"])
         del customer
+        return "Customer deleted"

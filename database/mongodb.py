@@ -1,8 +1,8 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 
-MONGO_URL = "mongodb://localhost:27017"
+MONGO_URL = "mongodb://3.91.173.4:27017"
 
-client = AsyncIOMotorClient(MONGO_URL)
+client = AsyncIOMotorClient("mongodb://3.91.173.4:27017")
 
 database = client.bank_db
 

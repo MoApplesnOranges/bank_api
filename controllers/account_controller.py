@@ -11,7 +11,7 @@ async def get_all_accounts():
 
 
 @router.get("/accounts/customer/{customer_id}")
-async def get_accounts_by_customer_id(customer_id: int):
+async def get_accounts_by_customer_id(customer_id: str):
     return await AccountService.get_accounts_by_customer_id(customer_id)
 
 

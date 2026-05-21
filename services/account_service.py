@@ -16,5 +16,8 @@ class AccountService:
     async def get_premium_accounts():
         return await AccountRepository.get_premium_accounts()
 
+    async def get_low_balance_accounts():
+        return await AccountRepository.get_low_balance_accounts()
+
     async def delete_account(account_id: str):
         return await AccountRepository.delete_account(account_id)
