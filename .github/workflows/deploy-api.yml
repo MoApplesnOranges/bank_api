@@ -1,0 +1,41 @@
+name: Deploy API to EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Pull latest code
+            cd ~/bank_api
+            git pull origin main
+
+            # Write .env from GitHub secret
+            echo "${{ secrets.ENV_FILE }}" > .env
+
+            # Rebuild and restart only the API container
+            docker compose pull
+            docker compose up -d --build api
+
+            # Remove unused images to save disk space
+            docker image prune -f

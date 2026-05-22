@@ -1,8 +1,12 @@
+import os
 from motor.motor_asyncio import AsyncIOMotorClient
+from dotenv import load_dotenv
 
-MONGO_URL = "mongodb://3.91.173.4:27017"
+load_dotenv()
 
-client = AsyncIOMotorClient("mongodb://3.91.173.4:27017")
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://3.91.173.4:27017")
+
+client = AsyncIOMotorClient(MONGO_URL)
 
 database = client.bank_db
 

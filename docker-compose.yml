@@ -6,10 +6,9 @@ services:
     container_name: fastapi_app
     ports:
       - "8000:8000"
-    environment:
-      MONGO_URL: mongodb://mongo:27017
-    depends_on:
-      - mongo
+    env_file:
+      - .env
+    restart: unless-stopped
 
   frontend:
     build: ./frontend
@@ -18,14 +17,21 @@ services:
       - "3000:80"
     depends_on:
       - api
+    restart: unless-stopped
 
+# ── Local dev only ────────────────────────────────────────────────────────────
+# Run with:  docker compose --profile local up
+# This spins up a local MongoDB so you don't need the EC2 instance running.
   mongo:
     image: mongo:7
     container_name: mongo_db
+    profiles:
+      - local
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    restart: unless-stopped
 
 volumes:
   mongo_data:
