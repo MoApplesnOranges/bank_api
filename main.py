@@ -15,6 +15,7 @@ ALLOWED_ORIGINS = [
     "https://MoApplesnOranges.github.io",   # GitHub Pages
     "http://localhost:5173",                  # Vite dev server
     "http://localhost:3000",                  # Docker frontend
+    "http://0.0.0.0:8000"
 ]
 
 # Allow any additional origin set via env (e.g. a custom domain)
