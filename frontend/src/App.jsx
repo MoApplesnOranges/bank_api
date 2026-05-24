@@ -1,9 +1,9 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
-import Customers from './pages/Customers';
-import CustomerDetail from './pages/CustomerDetail';
-import Accounts from './pages/Accounts';
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import Customers from "./pages/Customers";
+import CustomerDetail from "./pages/CustomerDetail";
+import Accounts from "./pages/Accounts";
 
 export default function App() {
   return (
