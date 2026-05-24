@@ -1,7 +1,6 @@
 FROM python:3.14.5-slim
 
-# WORKDIR
-# /BANK_API
+# WORKDIR/BANK_API
 
 COPY requirements.txt .
 
