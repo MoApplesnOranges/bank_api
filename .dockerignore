@@ -1,0 +1,20 @@
+# Local virtual environment — the image builds its own inside /venv
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Secrets — never bake .env into the image
+.env
+
+# Frontend is built by its own Docker service
+frontend/
+
+# Git & editor noise
+.git/
+.gitignore
+*.md
+.DS_Store

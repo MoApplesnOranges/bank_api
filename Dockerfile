@@ -1,11 +1,21 @@
-FROM python:3.14.5-slim
+FROM python:3.12-slim
 
-# WORKDIR/BANK_API
+# Set working directory
+WORKDIR /app
 
+# Create virtual environment
+RUN python -m venv /venv
+
+# Add venv to PATH so every subsequent RUN / CMD uses it
+ENV PATH="/venv/bin:$PATH"
+
+# Install dependencies into the venv
+# (copy requirements first for better Docker layer caching)
 COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt
-
+# Copy the rest of the application
 COPY . .
 
 EXPOSE 8000
