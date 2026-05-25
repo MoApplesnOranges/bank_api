@@ -1,0 +1,22 @@
+# EC2 production override — merge with base:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# Changes from base:
+#  - api: port 8000 no longer exposed directly (nginx faces the internet)
+#  - nginx: new service that terminates HTTPS and proxies to api:8000
+
+version: "3.9"
+
+services:
+  api:
+    ports: []   # internal only — nginx is the only public entrypoint
+
+  nginx:
+    build: ./nginx
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - api
+    restart: unless-stopped

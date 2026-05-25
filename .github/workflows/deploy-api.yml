@@ -9,6 +9,8 @@ on:
       - 'requirements.txt'
       - 'Dockerfile'
       - 'docker-compose.yml'
+      - 'docker-compose.prod.yml'
+      - 'nginx/**'
   workflow_dispatch:
 
 jobs:
@@ -26,16 +28,15 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Pull latest code
             cd ~/bank_api
             git pull origin main
 
             # Write .env from GitHub secret
             echo "${{ secrets.ENV_FILE }}" > .env
 
-            # Rebuild and restart only the API container
-            docker compose pull
-            docker compose up -d --build api
+            # Build and start API + nginx (production stack)
+            docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+              up -d --build api nginx
 
-            # Remove unused images to save disk space
+            # Clean up unused images
             docker image prune -f
