@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from services.customer_service import CustomerService
-from models.customer import CustomerCreate
+from models.customer import CustomerCreate, Customer
 
 router = APIRouter()
 
@@ -20,6 +20,9 @@ async def get_customer_by_id(customer_id: int | str):
 async def create_customer(customer_data: CustomerCreate):
     return await CustomerService.create_customer(customer_data)
 
+@router.put("/customers/{customer_id}")
+async def update_customer(customer_data: Customer):
+    return await CustomerService.update_customer(customer_data)
 
 @router.delete("/customers/{customer_id}")
 async def delete_customer(customer_id: int | str):

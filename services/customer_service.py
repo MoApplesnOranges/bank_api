@@ -12,5 +12,8 @@ class CustomerService:
     async def create_customer(customer_data):
         return await CustomerRepository.create_customer(customer_data)
 
+    async def update_customer(customer_data):
+        return await CustomerRepository.update_customer(customer_data)
+
     async def delete_customer(customer_id: int):
         return await CustomerRepository.delete_customer(customer_id)

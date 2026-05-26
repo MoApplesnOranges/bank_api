@@ -1,5 +1,5 @@
 from database.mongodb import customer_collection, account_collection
-from models.customer import CustomerCreate
+from models.customer import CustomerCreate, Customer
 from bson import ObjectId
 
 
@@ -53,6 +53,22 @@ class CustomerRepository:
         customer_dict["_id"] = str(result.inserted_id)
 
         return customer_dict
+
+    @staticmethod
+    async def update_customer(customer_data: Customer):
+
+        customer_dict = customer_data.model_dump()
+        customer_id = customer_dict.pop("_id")
+        await customer_collection.update_one(
+            {"_id": ObjectId(customer_id)},
+            {"$set": customer_dict}
+        )
+        updated_customer = await customer_collection.find_one(
+            {"_id": ObjectId(customer_id)}
+        )
+        updated_customer["_id"] = str(updated_customer["_id"])
+
+        return updated_customer
 
     @staticmethod
     async def delete_customer(customer_id: str):
